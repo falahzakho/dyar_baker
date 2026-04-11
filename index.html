@@ -3,179 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech AI | Welcome</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: radial-gradient(circle at center, #0a192f 0%, #020202 100%);
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            color: white;
+        /* 1. لێڤینا ناڤێ Tech AI (ڕەجفین) */
+        .tech-ai-container {
+            display: inline-block;
+            animation: glitch-shake 0.3s infinite ease-in-out;
+            /* ئەڤە وێ پاشخانا تە یا شین دپارێزیت */
         }
 
-        /* لڤینا ئەستێرەیان ل دەوروبەر */
-        .stars-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+        @keyframes glitch-shake {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
         }
 
+        /* 2. شێوازێ گۆهرینا زمانێ Welcome */
+        #welcome-text {
+            font-size: 40px;
+            font-weight: bold;
+            color: #00f2ff;
+            text-shadow: 0 0 15px #00f2ff;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            text-align: center;
+        }
+
+        .flip-active {
+            transform: rotateX(360deg);
+        }
+
+        /* 3. ستێرێن ل دەور و بەر (لێڤین) */
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
-            opacity: 0.5;
-            animation: moveStars 20s linear infinite;
+            animation: blink 2s infinite alternate;
         }
 
-        @keyframes moveStars {
-            from { transform: translateY(0) rotate(0deg); }
-            to { transform: translateY(-100vh) rotate(360deg); }
+        @keyframes blink {
+            from { opacity: 0.2; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
         }
-
-        /* Welcome Text - دزڤڕیت و دگۆهۆڕیت */
-        .welcome-msg {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 5px;
-            margin-bottom: 80px; /* کێمەک چوو سەرێ دا جهـ بۆ بازنەیی ببیت */
-            perspective: 1000px;
-            height: 50px;
-        }
-
-        .flip-text {
-            display: inline-block;
-            animation: flipAnimation 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(to right, #00d4ff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        @keyframes flipAnimation {
-            0%, 45% { transform: rotateX(0deg); content: "Welcome"; }
-            50%, 95% { transform: rotateX(180deg); }
-            100% { transform: rotateX(360deg); }
-        }
-
-        .flip-text::after {
-            content: "Welcome";
-            animation: changeLang 4s infinite;
-        }
-
-        @keyframes changeLang {
-            0%, 45% { content: "WELCOME"; }
-            50%, 95% { content: "خێرهاتن"; transform: rotateX(180deg); }
-        }
-
-        .container {
-            position: relative;
-            width: 350px;
-            height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px; /* بازنە کێمەک هاتە خارێ */
-        }
-
-        /* Tech AI - لڤین و ڕەجفین */
-        .brand-name {
-            color: #ffffff;
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-shadow: 0 0 25px #00d4ff;
-            z-index: 10;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            padding: 10px 20px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-            animation: vibration 0.3s infinite; /* ئەنیمەیشنا ڕەجفینێ */
-        }
-
-        @keyframes vibration {
-            0% { transform: translate(0,0); }
-            25% { transform: translate(2px, 2px); }
-            50% { transform: translate(-2px, -2px); }
-            75% { transform: translate(2px, -2px); }
-            100% { transform: translate(0,0); }
-        }
-
-        .orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px dashed rgba(0, 212, 255, 0.2);
-            border-radius: 50%;
-            animation: rotateOrbit 12s linear infinite;
-        }
-
-        .icon-link {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-size: 1.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.4s;
-        }
-
-        .icon-link:hover { transform: scale(1.2); background: #fff; }
-
-        .tiktok { top: -30px; left: 50%; transform: translateX(-50%); color: #ff0050; }
-        .instagram { bottom: -30px; left: 50%; transform: translateX(-50%); color: #E1306C; }
-        .telegram { top: 50%; left: -30px; transform: translateY(-50%); color: #0088cc; }
-
-        @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .icon-link i { animation: counterRotate 12s linear infinite; }
-        @keyframes counterRotate { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-
     </style>
 </head>
 <body>
 
-    <div class="stars-container" id="stars"></div>
+    <div id="welcome-text">WELCOME</div>
 
-    <div class="welcome-msg">
-        <span class="flip-text"></span>
-    </div>
-
-    <div class="container">
-        <div class="brand-name">TECH AI</div>
-        <div class="orbit">
-            <a href="https://www.tiktok.com/@_tech_ai_?_r=1&_t=ZS-95RtUPqa7Sj" target="_blank" class="icon-link tiktok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.instagram.com/__tech_.ai._?igsh=MTZ2ZGIxcXB2YjVjaw%3D%3D&utm_source=qr" target="_blank" class="icon-link instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram"><i class="fab fa-telegram"></i></a>
+    <div class="tech-ai-container">
+        <div style="border: 2px solid #00f2ff; padding: 10px 20px; border-radius: 15px; color: white; box-shadow: 0 0 10px #00f2ff;">
+            TECH AI
         </div>
     </div>
 
     <script>
-        // دروستکرنا ئەستێرەیێن زێدە ب شێوازەکێ هەرەمەکی
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 50; i++) {
-            const star = document.createElement('div');
+        // گۆهرینا زمانێ خێرهاتن هەر یەک چرکە
+        const welcomeEl = document.getElementById('welcome-text');
+        let isEnglish = true;
+
+        setInterval(() => {
+            welcomeEl.classList.add('flip-active');
+            
+            setTimeout(() => {
+                isEnglish = !isEnglish;
+                welcomeEl.innerText = isEnglish ? "WELCOME" : "خێرهاتن";
+                welcomeEl.classList.remove('flip-active');
+            }, 300); // نیڤا کاتی بۆ گۆهرینا پەیڤێ
+        }, 1500);
+
+        // دروستکرنا ستێران ب شێوەیەکێ ئۆتۆماتیکی
+        for (let i = 0; i < 30; i++) {
+            let star = document.createElement('div');
             star.className = 'star';
             star.style.width = Math.random() * 3 + 'px';
             star.style.height = star.style.width;
             star.style.left = Math.random() * 100 + 'vw';
             star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            starsContainer.appendChild(star);
+            star.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(star);
         }
     </script>
 </body>
