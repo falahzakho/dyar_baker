@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech AI Social Links</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #050505;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brand-name {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px #00d4ff;
+            z-index: 10;
+        }
+
+        .orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: rotateOrbit 15s linear infinite;
+        }
+
+        .icon-link {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .icon-link:hover {
+            transform: scale(1.2);
+            background: #fff;
+        }
+
+        /* دابەشکرنا ٤ ئایکۆنان ب شێوەیەکێ بازنەیی */
+        .tiktok { top: 0; left: 50%; transform: translate(-50%, -50%); color: #ff0050; }
+        .instagram { bottom: 0; left: 50%; transform: translate(-50%, 50%); color: #E1306C; }
+        .telegram { top: 50%; left: 0; transform: translate(-50%, -50%); color: #0088cc; }
+        .facebook { top: 50%; right: 0; transform: translate(50%, -50%); color: #1877F2; }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .icon-link i {
+            animation: counterRotate 15s linear infinite;
+        }
+
+        @keyframes counterRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: #00d4ff;
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-effect"></div>
+
+    <div class="container">
+        <div class="brand-name">TECH AI</div>
+
+        <div class="orbit">
+            <a href="https://www.tiktok.com/@_tech_ai_?_r=1&_t=ZS-95RtUPqa7Sj" target="_blank" class="icon-link tiktok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            
+            <a href="https://www.instagram.com/__tech_.ai._?igsh=MTZ2ZGIxcXB2YjVjaw%3D%3D&utm_source=qr" target="_blank" class="icon-link instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            
+            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram">
+                <i class="fab fa-telegram"></i>
+            </a>
+
+            <a href="https://www.facebook.com/share/1GeKzZrUoN/?mibextid=wwXIfr" target="_blank" class="icon-link facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
