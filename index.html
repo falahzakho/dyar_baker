@@ -3,88 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech AI Website</title>
     <style>
-        /* 1. لێڤینا ناڤێ Tech AI (ڕەجفین) */
-        .tech-ai-container {
-            display: inline-block;
-            animation: glitch-shake 0.3s infinite ease-in-out;
-            /* ئەڤە وێ پاشخانا تە یا شین دپارێزیت */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #050a14;
         }
 
-        @keyframes glitch-shake {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        /* 1. وێنەیێ تە وەک پاشبنەما (بێ گوهۆڕین) */
+        .main-bg {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 500px; 
+            background: url('image.png') no-repeat center center;
+            background-size: contain;
         }
 
-        /* 2. شێوازێ گۆهرینا زمانێ Welcome */
-        #welcome-text {
-            font-size: 40px;
-            font-weight: bold;
-            color: #00f2ff;
-            text-shadow: 0 0 15px #00f2ff;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block;
-            text-align: center;
-        }
-
-        .flip-active {
-            transform: rotateX(360deg);
-        }
-
-        /* 3. ستێرێن ل دەور و بەر (لێڤین) */
-        .star {
+        /* 2. نڤیسینا Welcome ل سەر ناڤێ TECH AI */
+        .welcome-msg {
             position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: blink 2s infinite alternate;
+            top: 13%; 
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d2ff;
+            font-family: Arial, sans-serif;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.8);
+            animation: blink 2s infinite;
         }
 
         @keyframes blink {
-            from { opacity: 0.2; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
+
+        /* 3. ب تنێ تەپا دنیا دزڤڕیت */
+        .earth-spin {
+            position: absolute;
+            top: 45.8%; 
+            left: 23.8%;
+            width: 105px;
+            height: 105px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png') no-repeat center;
+            background-size: contain;
+            border-radius: 50%;
+            animation: rotateEarth 12s linear infinite;
+            pointer-events: none; /* دا کو ڕێگریێ ل کلیکێ نەکەت */
+        }
+
+        @keyframes rotateEarth {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 4. لینک ل سەر ئایکۆنان (بێ جولە) */
+        .clickable-area {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            /* background: rgba(255,0,0,0.2);  بۆ تێستێ جهی ڤی ڕەنگی لادە */
+            cursor: pointer;
+        }
+
+        .insta { top: 38%; right: 18%; }
+        .tele { top: 52%; right: 35%; }
+        .tiktok { top: 62%; right: 13%; }
+
     </style>
 </head>
 <body>
 
-    <div id="welcome-text">WELCOME</div>
+    <div class="main-bg">
+        <div class="welcome-msg">Welcome</div>
 
-    <div class="tech-ai-container">
-        <div style="border: 2px solid #00f2ff; padding: 10px 20px; border-radius: 15px; color: white; box-shadow: 0 0 10px #00f2ff;">
-            TECH AI
-        </div>
+        <div class="earth-spin"></div>
+
+        <a href="https://www.instagram.com/__tech_.ai._" target="_blank" class="clickable-area insta"></a>
+        <a href="https://t.me/tech_ai_falah" target="_blank" class="clickable-area tele"></a>
+        <a href="https://www.tiktok.com/@_tech_ai_" target="_blank" class="clickable-area tiktok"></a>
     </div>
 
-    <script>
-        // گۆهرینا زمانێ خێرهاتن هەر یەک چرکە
-        const welcomeEl = document.getElementById('welcome-text');
-        let isEnglish = true;
-
-        setInterval(() => {
-            welcomeEl.classList.add('flip-active');
-            
-            setTimeout(() => {
-                isEnglish = !isEnglish;
-                welcomeEl.innerText = isEnglish ? "WELCOME" : "خێرهاتن";
-                welcomeEl.classList.remove('flip-active');
-            }, 300); // نیڤا کاتی بۆ گۆهرینا پەیڤێ
-        }, 1500);
-
-        // دروستکرنا ستێران ب شێوەیەکێ ئۆتۆماتیکی
-        for (let i = 0; i < 30; i++) {
-            let star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = Math.random() * 3 + 'px';
-            star.style.height = star.style.width;
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(star);
-        }
-    </script>
 </body>
 </html>
