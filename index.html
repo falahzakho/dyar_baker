@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech AI | Space Journey</title>
+    <title>Tech AI | Real Universe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: radial-gradient(circle at center, #0a192f 0%, #000 100%);
+            --bg-color: #020202;
             --text-color: #00d4ff;
-            --sun-moon-shadow: 0 0 50px #00d4ff;
         }
 
         [data-theme="light"] {
-            --bg-color: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
-            --text-color: #ffffff;
-            --sun-moon-shadow: 0 0 60px #ffea00;
+            --bg-color: #87CEEB;
+            --text-color: #f39c12;
         }
 
         body {
@@ -33,156 +31,133 @@
             transition: background 1s ease;
         }
 
-        /* دوگمەیا گوهۆڕینا مۆدێ */
+        /* دوگمەیا گوهۆڕینێ */
         .theme-switch {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
             cursor: pointer;
-            font-size: 1.5rem;
             background: rgba(255,255,255,0.1);
-            padding: 10px 15px;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
             border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(5px);
-            color: white;
-            transition: 0.3s;
         }
 
-        /* ستایلێ هەسارەیان */
-        .planet {
+        /* گەردوون و هەسارە */
+        .universe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .planet-img {
             position: absolute;
             border-radius: 50%;
-            opacity: 0.7;
-            pointer-events: none;
-            transition: 1s ease;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            animation: rotateSelf 20s linear infinite;
+            transition: opacity 1s, transform 1s;
         }
 
-        /* د حالەتێ Light Mode دا هەسارە دبنە عەور یان بەرزە دبن */
-        [data-theme="light"] .planet {
+        @keyframes rotateSelf {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        [data-theme="light"] .planet-img {
             opacity: 0;
-            transform: translateY(-100vh);
+            transform: scale(0);
         }
 
-        .saturn { width: 80px; height: 40px; background: #e3bb76; border-radius: 50%; top: 15%; left: 10%; box-shadow: inset -10px -10px 20px #000; border: 4px solid rgba(227, 187, 118, 0.4); transform: rotate(-20deg); }
-        .jupiter { width: 100px; height: 100px; background: radial-gradient(circle, #d39c7e, #af6124); top: 60%; left: 5%; }
-        .uranus { width: 60px; height: 60px; background: #b0e0e6; top: 10%; right: 15%; box-shadow: 0 0 20px #b0e0e6; }
-        .neptune { width: 50px; height: 50px; background: #4169e1; bottom: 20%; right: 10%; }
-        .moon { width: 40px; height: 40px; background: #ddd; top: 30%; right: 40%; box-shadow: 0 0 15px #fff; }
+        /* پێگەیا هەسارەیان */
+        .mercury { width: 30px; top: 15%; left: 20%; animation-duration: 5s; }
+        .venus { width: 50px; bottom: 15%; left: 10%; animation-duration: 15s; }
+        .earth { width: 60px; top: 10%; right: 25%; animation-duration: 20s; }
+        .mars { width: 45px; bottom: 20%; right: 30%; animation-duration: 18s; }
+        .jupiter { width: 120px; top: 50%; left: 5%; animation-duration: 40s; }
+        .saturn { width: 140px; top: 10%; left: 40%; animation-duration: 35s; }
+        .uranus { width: 70px; bottom: 10%; right: 5%; animation-duration: 25s; }
+        .neptune { width: 65px; top: 40%; right: 5%; animation-duration: 30s; }
+        .moon { width: 25px; top: 20%; right: 22%; animation-duration: 10s; }
 
-        /* Welcome Text */
+        /* تشتێن سەرەکی */
         .welcome-msg {
             font-size: 3rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 50px;
+            font-weight: 900;
             color: var(--text-color);
-            text-shadow: var(--sun-moon-shadow);
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
             z-index: 10;
+            margin-bottom: 20px;
         }
 
         .container {
             position: relative;
-            width: 350px;
-            height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            z-index: 10;
         }
 
         .brand-name {
-            color: #ffffff;
-            font-size: 2.2rem;
-            font-weight: 900;
-            text-shadow: 0 0 25px #00d4ff;
-            z-index: 10;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            border-radius: 15px;
-        }
-
-        .orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            animation: rotateOrbit 15s linear infinite;
-        }
-
-        .icon-link {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.1);
+            font-size: 2.5rem;
+            color: white;
+            padding: 15px 30px;
+            border: 2px solid var(--text-color);
+            border-radius: 20px;
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-size: 1.8rem;
-            transition: 0.4s;
         }
 
-        .icon-link:hover { transform: scale(1.2); background: #fff; }
-
-        .tiktok { top: -30px; left: 50%; transform: translateX(-50%); color: #ff0050; }
-        .instagram { bottom: -30px; left: 50%; transform: translateX(-50%); color: #E1306C; }
-        .telegram { top: 50%; left: -30px; transform: translateY(-50%); color: #0088cc; }
-
-        @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* Sun for Light Mode */
+        /* ڕۆژ بۆ Light Mode */
         .sun {
             position: absolute;
-            top: -200px;
             width: 150px;
             height: 150px;
-            background: #ffea00;
+            background: radial-gradient(circle, #fff700, #ff8800);
             border-radius: 50%;
-            box-shadow: 0 0 100px #ffea00;
-            display: none;
+            box-shadow: 0 0 100px #ff8800;
+            top: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 1s ease-in-out;
         }
 
-        [data-theme="light"] .sun { display: block; top: 10%; left: 10%; animation: sunFloat 4s ease-in-out infinite; }
-        @keyframes sunFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        [data-theme="light"] .sun { top: 50px; }
 
     </style>
 </head>
 <body data-theme="dark">
 
     <div class="theme-switch" onclick="toggleTheme()">
-        <i id="theme-icon" class="fas fa-moon"></i>
+        <i id="theme-icon" class="fas fa-moon"></i> مۆد بگۆڕە
     </div>
 
-    <div class="planet saturn"></div>
-    <div class="planet jupiter"></div>
-    <div class="planet uranus"></div>
-    <div class="planet neptune"></div>
-    <div class="planet moon"></div>
+    <div class="universe">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_color_-_Prockter07-edit1.jpg" class="planet-img mercury" alt="Mercury">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Venus_from_探査機_Messenger.jpg" class="planet-img venus" alt="Venus">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" class="planet-img earth" alt="Earth">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg" class="planet-img mars" alt="Mars">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Jupiter.jpg" class="planet-img jupiter" alt="Jupiter">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Saturn_during_Equinox.jpg" class="planet-img saturn" alt="Saturn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Uranus2.jpg" class="planet-img uranus" alt="Uranus">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Neptune_Full.jpg" class="planet-img neptune" alt="Neptune">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/FullMoon2010.jpg" class="planet-img moon" alt="Moon">
+    </div>
+
     <div class="sun"></div>
 
-    <div class="welcome-msg">Tech AI</div>
+    <div class="welcome-msg">WELCOME TO TECH AI</div>
 
     <div class="container">
-        <div class="brand-name">FALAH</div>
-
-        <div class="orbit">
-            <a href="https://www.tiktok.com/@_tech_ai_?_r=1&_t=ZS-95RtUPqa7Sj" target="_blank" class="icon-link tiktok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.instagram.com/__tech_.ai._?igsh=MTZ2ZGIxcXB2YjVjaw%3D%3D&utm_source=qr" target="_blank" class="icon-link instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram"><i class="fab fa-telegram"></i></a>
-        </div>
+        <div class="brand-name">Tech Ai ZAKHO</div>
     </div>
 
     <script>
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
-            
             if (body.getAttribute('data-theme') === 'dark') {
                 body.setAttribute('data-theme', 'light');
                 icon.className = 'fas fa-sun';
