@@ -3,142 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech AI | Global Connect</title>
+    <title>Tech Rest | خوارنگەها تەکنیک</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #e67e22;
+            --dark: #2c3e50;
+            --light: #f4f4f4;
+        }
+
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: radial-gradient(circle at center, #001d3d 0%, #000 100%);
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--light);
+            color: var(--dark);
         }
 
-        .world-container {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* وێنەیێ جیهانێ ل ناڤەڕاستێ */
-        .earth {
-            width: 250px;
-            height: 250px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
-            background-size: cover;
-            border-radius: 50%;
-            box-shadow: inset -20px -20px 50px #000, 0 0 50px rgba(0, 212, 255, 0.4);
-            z-index: 5;
-            animation: rotateEarth 60s linear infinite;
-        }
-
-        @keyframes rotateEarth {
-            from { background-position: 0 0; }
-            to { background-position: 500px 0; }
-        }
-
-        /* تور و هێلێن ل دەور جیهانێ */
-        .network-bg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            border-radius: 50%;
-            animation: pulse 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(0.95); opacity: 0.3; }
-            to { transform: scale(1.05); opacity: 0.6; }
-        }
-
-        /* خولا ئایکۆنان */
-        .orbit {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            animation: rotateOrbit 15s linear infinite;
-        }
-
-        @keyframes rotateOrbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .icon-link {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-size: 2rem;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            transition: 0.4s;
-            /* بۆ هندێ ئایکۆن بخۆ نەزڤریت و رێک بیت */
-            animation: reverseRotate 15s linear infinite;
-        }
-
-        @keyframes reverseRotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(-360deg); }
-        }
-
-        .icon-link:hover {
-            transform: scale(1.2) rotate(0deg);
-            background: #fff;
-            box-shadow: 0 0 30px #00d4ff;
-        }
-
-        /* دیارکرنا جهێن ئایکۆنان ل سەر بازنەی */
-        .tiktok { top: -30px; left: 50%; transform: translateX(-50%); color: #ff0050; }
-        .instagram { bottom: 50px; left: -30px; color: #E1306C; }
-        .telegram { bottom: 50px; right: -30px; color: #0088cc; }
-
-        .brand-text {
-            position: absolute;
-            bottom: -80px;
+        header {
+            background-color: var(--dark);
             color: white;
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: 0 0 15px #00d4ff;
-            letter-spacing: 2px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        /* لاپەرێ سەرەکی */
+        .main-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .category-card:hover { transform: translateY(-5px); }
+
+        .category-card img { width: 100%; height: 150px; object-fit: cover; }
+
+        .category-card h3 { padding: 10px; margin: 0; }
+
+        /* لاپەرێ خوارنان */
+        .food-list { display: none; }
+
+        .food-item {
+            background: white;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .food-item img {
+            width: 80px; height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-left: 15px;
+        }
+
+        .food-info { flex-grow: 1; }
+        .food-info h4 { margin: 0 0 5px 0; color: var(--primary); }
+        .price { font-weight: bold; color: #27ae60; }
+
+        .back-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="world-container">
-        <div class="network-bg"></div>
-        <div class="earth"></div>
+<header>
+    <h1>Tech Rest</h1>
+    <p>ب خیر بێن بۆ تاموچێژا تەکنیکی</p>
+</header>
+
+<div class="container">
+    
+    <div id="home" class="main-menu">
+        <div class="category-card" onclick="showCategory('pizza')">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="پیتزا">
+            <h3>پیتزا</h3>
+        </div>
+        <div class="category-card" onclick="showCategory('kada')">
+            <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=400&q=80" alt="کادە">
+            <h3>کادە</h3>
+        </div>
+    </div>
+
+    <div id="pizza" class="food-list">
+        <button class="back-btn" onclick="showHome()"><i class="fas fa-arrow-right"></i> ڤەگەر بۆ سەرەکی</button>
+        <h3>جورێن پیتزایێ</h3>
         
-        <div class="orbit">
-            <a href="https://www.tiktok.com/@_tech_ai_" target="_blank" class="icon-link tiktok">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="https://www.instagram.com/__tech_.ai._" target="_blank" class="icon-link instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram">
-                <i class="fab fa-telegram"></i>
-            </a>
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad50?w=200" alt="Pizza">
+            <div class="food-info">
+                <h4>پیتزا ئیتالی</h4>
+                <div class="price">٥,٠٠٠ دینار</div>
+            </div>
         </div>
 
-        <div class="brand-text">TECH AI</div>
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=200" alt="Pizza">
+            <div class="food-info">
+                <h4>پیتزا پێپەرۆنی</h4>
+                <div class="price">٥,٠٠٠ دینار</div>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200" alt="Pizza">
+            <div class="food-info">
+                <h4>پیتزا فاهیتا</h4>
+                <div class="price">٥,٠٠٠ دینار</div>
+            </div>
+        </div>
+        
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1598177090164-83950673e44c?w=200" alt="Pizza">
+            <div class="food-info">
+                <h4>پیتزا ماسی</h4>
+                <div class="price">٧,٠٠٠ دینار</div>
+            </div>
+        </div>
     </div>
+
+    <div id="kada" class="food-list">
+        <button class="back-btn" onclick="showHome()"><i class="fas fa-arrow-right"></i> ڤەگەر بۆ سەرەکی</button>
+        <h3>جورێن کادەیێ</h3>
+        
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200" alt="Kada">
+            <div class="food-info">
+                <h4>کادا پەنێری</h4>
+                <div class="price">٤,٠٠٠ دینار</div>
+            </div>
+        </div>
+
+        <div class="food-item">
+            <img src="https://images.unsplash.com/photo-1603532648955-0393e01c8f3d?w=200" alt="Kada">
+            <div class="food-info">
+                <h4>کادا گوشتی</h4>
+                <div class="price">٥,٠٠٠ دینار</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showCategory(id) {
+        document.getElementById('home').style.display = 'none';
+        document.getElementById('pizza').style.display = 'none';
+        document.getElementById('kada').style.display = 'none';
+        
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function showHome() {
+        document.getElementById('home').style.display = 'grid';
+        document.getElementById('pizza').style.display = 'none';
+        document.getElementById('kada').style.display = 'none';
+    }
+</script>
 
 </body>
 </html>
