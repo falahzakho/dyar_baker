@@ -11,7 +11,6 @@
             --bg-color: radial-gradient(circle at center, #0a192f 0%, #000 100%);
             --text-color: #00d4ff;
             --sun-moon-shadow: 0 0 50px #00d4ff;
-            --neon-glow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
         }
 
         [data-theme="light"] {
@@ -24,120 +23,86 @@
             margin: 0; padding: 0;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             min-height: 100vh; background: var(--bg-color);
-            font-family: 'Poppins', sans-serif; overflow-x: hidden;
+            font-family: 'Poppins', sans-serif; overflow: hidden;
             transition: background 1s ease; color: white;
         }
 
-        /* --- 1. Shooting Stars --- */
+        /* --- Shooting Stars --- */
         .shooting_star {
             position: absolute; height: 2px;
             background: linear-gradient(-45deg, #fff, rgba(0, 0, 255, 0));
-            border-radius: 999px; filter: drop-shadow(0 0 6px #fff);
+            filter: drop-shadow(0 0 6px #fff);
             animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
             z-index: 0;
         }
         @keyframes tail { 0% { width: 0; } 30% { width: 100px; } 100% { width: 0; } }
-        @keyframes shooting { 0% { transform: translateX(0) rotate(45deg); } 100% { transform: translateX(400px) rotate(45deg); } }
+        @keyframes shooting { 0% { transform: translateX(0) rotate(45deg); } 100% { transform: translateX(300px) rotate(45deg); } }
 
-        /* Theme Switch */
+        /* Theme Switch - Top Right */
         .theme-switch {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
+            position: fixed; top: 20px; right: 20px; z-index: 1000;
             cursor: pointer; font-size: 1.5rem; background: rgba(255,255,255,0.1);
             padding: 10px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(5px); color: white; transition: 0.3s;
         }
 
-        /* --- 2. Tooltips --- */
-        [title] { position: relative; }
-
         /* Planets */
         .planet { position: absolute; border-radius: 50%; opacity: 0.7; pointer-events: none; transition: 1s ease; }
-        [data-theme="light"] .planet { opacity: 0; transform: translateY(-100vh); }
-        .saturn { width: 80px; height: 40px; background: #e3bb76; top: 15%; left: 10%; box-shadow: inset -10px -10px 20px #000; border: 4px solid rgba(227, 187, 118, 0.4); transform: rotate(-20deg); }
+        .saturn { width: 80px; height: 40px; background: #e3bb76; top: 15%; left: 10%; transform: rotate(-20deg); box-shadow: inset -10px -10px 20px #000; }
         .jupiter { width: 100px; height: 100px; background: radial-gradient(circle, #d39c7e, #af6124); top: 60%; left: 5%; }
-        .uranus { width: 60px; height: 60px; background: #b0e0e6; top: 10%; right: 15%; box-shadow: 0 0 20px #b0e0e6; }
-        .neptune { width: 50px; height: 50px; background: #4169e1; bottom: 20%; right: 10%; }
         .moon { width: 40px; height: 40px; background: #ddd; top: 30%; right: 40%; box-shadow: 0 0 15px #fff; }
 
-        /* Welcome & 3. Neon Glow Brand */
-        .welcome-msg {
-            font-size: 3rem; font-weight: 800; text-transform: uppercase;
-            margin-bottom: 20px; color: var(--text-color);
-            text-shadow: var(--sun-moon-shadow); z-index: 10;
-        }
-
-        .container { position: relative; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; }
+        /* Brand & Orbit */
+        .welcome-msg { font-size: 3rem; font-weight: 800; text-transform: uppercase; color: var(--text-color); text-shadow: var(--sun-moon-shadow); margin-bottom: 20px; z-index: 10; }
+        .container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
         .brand-name {
-            color: #ffffff; font-size: 2.2rem; font-weight: 900;
-            text-shadow: var(--neon-glow); z-index: 10;
-            padding: 10px 25px; background: rgba(0, 212, 255, 0.1);
-            backdrop-filter: blur(5px); border: 2px solid var(--text-color);
-            border-radius: 15px; animation: pulseGlow 2s infinite alternate;
+            color: #ffffff; font-size: 2rem; font-weight: 900;
+            text-shadow: 0 0 25px #00d4ff; z-index: 10;
+            padding: 10px 20px; background: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--text-color); border-radius: 15px;
+            animation: neonPulse 2s infinite alternate;
         }
-        @keyframes pulseGlow { from { box-shadow: 0 0 15px var(--text-color); } to { box-shadow: 0 0 35px var(--text-color); } }
+        @keyframes neonPulse { from { box-shadow: 0 0 10px #00d4ff; } to { box-shadow: 0 0 30px #00d4ff; } }
 
-        /* Orbit Links */
-        .orbit {
-            position: absolute; width: 100%; height: 100%;
-            border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 50%;
-            animation: rotateOrbit 15s linear infinite;
-        }
-        .icon-link {
-            position: absolute; width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            text-decoration: none; font-size: 1.8rem; transition: 0.4s;
-        }
-        .icon-link:hover { transform: scale(1.2); background: #fff; box-shadow: 0 0 20px #fff; }
-        .tiktok { top: -30px; left: 50%; transform: translateX(-50%); color: #ff0050; }
-        .instagram { bottom: -30px; left: 50%; transform: translateX(-50%); color: #E1306C; }
-        .telegram { top: 50%; left: -30px; transform: translateY(-50%); color: #0088cc; }
+        .orbit { position: absolute; width: 100%; height: 100%; border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 50%; animation: rotateOrbit 15s linear infinite; }
+        .icon-link { position: absolute; width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; font-size: 1.5rem; transition: 0.4s; }
+        .tiktok { top: -25px; left: 50%; transform: translateX(-50%); color: #ff0050; }
+        .instagram { bottom: -25px; left: 50%; transform: translateX(-50%); color: #E1306C; }
+        .telegram { top: 50%; left: -25px; transform: translateY(-50%); color: #0088cc; }
         @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- 4. Contact Form --- */
-        .contact-card {
-            margin-top: 80px; background: rgba(255, 255, 255, 0.05);
-            padding: 25px; border-radius: 20px; backdrop-filter: blur(10px);
-            border: 1px solid var(--text-color); width: 300px; z-index: 100;
-        }
-        .contact-card input, .contact-card textarea {
-            width: 100%; padding: 12px; margin: 8px 0;
-            background: rgba(0,0,0,0.4); border: 1px solid #333;
-            color: white; border-radius: 10px; box-sizing: border-box;
-        }
-        .contact-card button {
-            width: 100%; padding: 12px; background: var(--text-color);
-            border: none; color: black; font-weight: bold;
-            border-radius: 10px; cursor: pointer; transition: 0.3s;
-        }
-        .contact-card button:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--text-color); }
-
-        /* --- 5. Live Time --- */
-        #live-clock {
+        /* --- New Contact Icon & Popup --- */
+        .contact-trigger {
             position: fixed; bottom: 20px; left: 20px;
-            font-size: 1.1rem; color: var(--text-color);
-            background: rgba(0,0,0,0.5); padding: 5px 15px;
-            border-radius: 20px; border: 1px solid var(--text-color);
-        }
-
-        /* --- 6. Background Music Control --- */
-        .music-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 50px; height: 50px; background: var(--text-color);
+            width: 55px; height: 55px; background: var(--text-color);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; color: black; font-size: 1.3rem; z-index: 1000;
+            cursor: pointer; color: black; font-size: 1.4rem; z-index: 1000;
+            box-shadow: 0 0 15px var(--text-color);
+        }
+        .contact-popup {
+            position: fixed; bottom: 85px; left: 20px;
+            background: rgba(10, 25, 47, 0.95); padding: 20px; border-radius: 15px;
+            backdrop-filter: blur(15px); border: 1px solid var(--text-color);
+            width: 260px; display: none; z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .contact-popup.active { display: block; }
+        .contact-popup input, .contact-popup textarea {
+            width: 100%; padding: 10px; margin: 5px 0;
+            background: rgba(255,255,255,0.1); border: 1px solid #333;
+            color: white; border-radius: 8px; box-sizing: border-box;
+        }
+        .contact-popup button {
+            width: 100%; padding: 10px; background: var(--text-color);
+            border: none; color: black; font-weight: bold; border-radius: 8px; cursor: pointer;
         }
 
-        .sun {
-            position: absolute; width: 150px; height: 150px; background: #ffea00;
-            border-radius: 50%; box-shadow: 0 0 100px #ffea00; display: none;
-        }
-        [data-theme="light"] .sun { display: block; top: 10%; left: 10%; animation: sunFloat 4s ease-in-out infinite; }
+        #live-time { position: fixed; bottom: 15px; right: 20px; color: var(--text-color); font-weight: bold; }
     </style>
 </head>
 <body data-theme="dark">
 
-    <div id="stars-layer"></div>
+    <div id="shooting-stars-box"></div>
 
     <div class="theme-switch" onclick="toggleTheme()" title="گوهۆڕینا مۆدێ">
         <i id="theme-icon" class="fas fa-moon"></i>
@@ -145,39 +110,32 @@
 
     <div class="planet saturn"></div>
     <div class="planet jupiter"></div>
-    <div class="planet uranus"></div>
-    <div class="planet neptune"></div>
     <div class="planet moon"></div>
-    <div class="sun"></div>
 
     <div class="welcome-msg">welcome</div>
 
     <div class="container">
-        <div class="brand-name" title="براندێ فەرمی">Tech Ai</div>
+        <div class="brand-name">Tech Ai</div>
         <div class="orbit">
-            <a href="https://www.tiktok.com/@_tech_ai_?_r=1&_t=ZS-95RtUPqa7Sj" target="_blank" class="icon-link tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.instagram.com/__tech_.ai._?igsh=MTZ2ZGIxcXB2YjVjaw%3D%3D&utm_source=qr" target="_blank" class="icon-link instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://www.tiktok.com/@_tech_ai_" target="_blank" class="icon-link tiktok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/__tech_.ai._" target="_blank" class="icon-link instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram"><i class="fab fa-telegram"></i></a>
         </div>
     </div>
 
-    <div class="contact-card">
-        <h3 style="text-align:center; color:var(--text-color); margin-top:0;">Contact Me</h3>
-        <input type="text" id="sender-name" placeholder="Navێ te...">
-        <textarea id="sender-msg" rows="3" placeholder="Nameya te..."></textarea>
-        <button onclick="sendToTelegram()">Send to Telegram</button>
+    <div class="contact-trigger" onclick="toggleContact()" title="نامێ بنێرە">
+        <i class="fas fa-envelope"></i>
+    </div>
+    <div class="contact-popup" id="contactBox">
+        <h4 style="margin: 0 0 10px 0; color: var(--text-color);">Contact Me</h4>
+        <input type="text" id="name" placeholder="Navێ te...">
+        <textarea id="msg" rows="3" placeholder="Nameya te..."></textarea>
+        <button onclick="sendTele()">Send to Telegram</button>
     </div>
 
-    <div id="live-clock">00:00:00</div>
-
-    <div class="music-btn" onclick="toggleSpaceMusic()" title="موزیکا فەزایێ">
-        <i id="m-icon" class="fas fa-play"></i>
-    </div>
-
-    <div id="yt-player" style="position: absolute; top: -1000px;"></div>
+    <div id="live-time">00:00:00</div>
 
     <script>
-        // 1. Theme Toggle
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('theme-icon');
@@ -190,53 +148,29 @@
             }
         }
 
-        // 2. Shooting Stars Generator
-        function createShootingStar() {
+        function toggleContact() {
+            document.getElementById('contactBox').classList.toggle('active');
+        }
+
+        function createStar() {
             const star = document.createElement('div');
             star.className = 'shooting_star';
             star.style.top = Math.random() * 50 + '%';
             star.style.left = Math.random() * 100 + '%';
-            document.getElementById('stars-layer').appendChild(star);
+            document.getElementById('shooting-stars-box').appendChild(star);
             setTimeout(() => star.remove(), 3000);
         }
-        setInterval(createShootingStar, 2500);
+        setInterval(createStar, 2500);
 
-        // 3. Live Time
         setInterval(() => {
-            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
+            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
         }, 1000);
 
-        // 4. Telegram Logic
-        function sendToTelegram() {
-            const name = document.getElementById('sender-name').value;
-            const msg = document.getElementById('sender-msg').value;
-            if(name && msg) {
-                window.open(`https://t.me/falahzakho?text=Slav! Nav: ${name}%0AName: ${msg}`, '_blank');
-            } else {
-                alert("Nav u Namey بنڤێسە");
-            }
-        }
-
-        // 5. YouTube Audio API
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                height: '0', width: '0', videoId: 'WI3F9RKSAQY'
-            });
-        }
-
-        let playing = false;
-        function toggleSpaceMusic() {
-            const icon = document.getElementById('m-icon');
-            if(!playing) {
-                player.playVideo(); icon.className = 'fas fa-pause'; playing = true;
-            } else {
-                player.pauseVideo(); icon.className = 'fas fa-play'; playing = false;
+        function sendTele() {
+            const n = document.getElementById('name').value;
+            const m = document.getElementById('msg').value;
+            if(n && m) {
+                window.open(`https://t.me/falahzakho?text=Nav: ${n}%0AName: ${m}`, '_blank');
             }
         }
     </script>
