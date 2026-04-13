@@ -1,177 +1,215 @@
 <!DOCTYPE html>
-<html lang="ku">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech AI | Space Journey</title>
+    <title>Tech AI | Cloud Mining</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: radial-gradient(circle at center, #0a192f 0%, #000 100%);
-            --text-color: #00d4ff;
-            --sun-moon-shadow: 0 0 50px #00d4ff;
-        }
-
-        [data-theme="light"] {
-            --bg-color: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
-            --text-color: #ffffff;
-            --sun-moon-shadow: 0 0 60px #ffea00;
+            --primary: #00d4ff;
+            --bg: #050a14;
+            --card-bg: rgba(255, 255, 255, 0.05);
         }
 
         body {
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            min-height: 100vh; background: var(--bg-color);
-            font-family: 'Poppins', sans-serif; overflow: hidden;
-            transition: background 1s ease; color: white;
+            margin: 0; font-family: 'Poppins', sans-serif;
+            background: var(--bg); color: white;
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
         }
 
-        /* --- Shooting Stars --- */
-        .shooting_star {
-            position: absolute; height: 2px;
-            background: linear-gradient(-45deg, #fff, rgba(0, 0, 255, 0));
-            filter: drop-shadow(0 0 6px #fff);
-            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
-            z-index: 0;
-        }
-        @keyframes tail { 0% { width: 0; } 30% { width: 100px; } 100% { width: 0; } }
-        @keyframes shooting { 0% { transform: translateX(0) rotate(45deg); } 100% { transform: translateX(300px) rotate(45deg); } }
-
-        /* Theme Switch - Top Right */
-        .theme-switch {
-            position: fixed; top: 20px; right: 20px; z-index: 1000;
-            cursor: pointer; font-size: 1.5rem; background: rgba(255,255,255,0.1);
-            padding: 10px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px); color: white; transition: 0.3s;
+        /* Auth Screen */
+        #auth-screen {
+            position: fixed; inset: 0; background: var(--bg);
+            z-index: 2000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 20px;
         }
 
-        /* Planets */
-        .planet { position: absolute; border-radius: 50%; opacity: 0.7; pointer-events: none; transition: 1s ease; }
-        .saturn { width: 80px; height: 40px; background: #e3bb76; top: 15%; left: 10%; transform: rotate(-20deg); box-shadow: inset -10px -10px 20px #000; }
-        .jupiter { width: 100px; height: 100px; background: radial-gradient(circle, #d39c7e, #af6124); top: 60%; left: 5%; }
-        .moon { width: 40px; height: 40px; background: #ddd; top: 30%; right: 40%; box-shadow: 0 0 15px #fff; }
-
-        /* Brand & Orbit */
-        .welcome-msg { font-size: 3rem; font-weight: 800; text-transform: uppercase; color: var(--text-color); text-shadow: var(--sun-moon-shadow); margin-bottom: 20px; z-index: 10; }
-        .container { position: relative; width: 300px; height: 300px; display: flex; justify-content: center; align-items: center; }
-        .brand-name {
-            color: #ffffff; font-size: 2rem; font-weight: 900;
-            text-shadow: 0 0 25px #00d4ff; z-index: 10;
-            padding: 10px 20px; background: rgba(0, 0, 0, 0.5);
-            border: 2px solid var(--text-color); border-radius: 15px;
-            animation: neonPulse 2s infinite alternate;
+        .auth-card {
+            background: var(--card-bg); padding: 30px; border-radius: 20px;
+            backdrop-filter: blur(10px); border: 1px solid var(--primary);
+            width: 100%; max-width: 320px; text-align: center;
         }
-        @keyframes neonPulse { from { box-shadow: 0 0 10px #00d4ff; } to { box-shadow: 0 0 30px #00d4ff; } }
 
-        .orbit { position: absolute; width: 100%; height: 100%; border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 50%; animation: rotateOrbit 15s linear infinite; }
-        .icon-link { position: absolute; width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; font-size: 1.5rem; transition: 0.4s; }
-        .tiktok { top: -25px; left: 50%; transform: translateX(-50%); color: #ff0050; }
-        .instagram { bottom: -25px; left: 50%; transform: translateX(-50%); color: #E1306C; }
-        .telegram { top: 50%; left: -25px; transform: translateY(-50%); color: #0088cc; }
-        @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- New Contact Icon & Popup --- */
-        .contact-trigger {
-            position: fixed; bottom: 20px; left: 20px;
-            width: 55px; height: 55px; background: var(--text-color);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; color: black; font-size: 1.4rem; z-index: 1000;
-            box-shadow: 0 0 15px var(--text-color);
-        }
-        .contact-popup {
-            position: fixed; bottom: 85px; left: 20px;
-            background: rgba(10, 25, 47, 0.95); padding: 20px; border-radius: 15px;
-            backdrop-filter: blur(15px); border: 1px solid var(--text-color);
-            width: 260px; display: none; z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .contact-popup.active { display: block; }
-        .contact-popup input, .contact-popup textarea {
-            width: 100%; padding: 10px; margin: 5px 0;
+        input {
+            width: 100%; padding: 12px; margin: 10px 0;
             background: rgba(255,255,255,0.1); border: 1px solid #333;
-            color: white; border-radius: 8px; box-sizing: border-box;
-        }
-        .contact-popup button {
-            width: 100%; padding: 10px; background: var(--text-color);
-            border: none; color: black; font-weight: bold; border-radius: 8px; cursor: pointer;
+            border-radius: 10px; color: white; outline: none;
         }
 
-        #live-time { position: fixed; bottom: 15px; right: 20px; color: var(--text-color); font-weight: bold; }
+        button {
+            width: 100%; padding: 12px; background: var(--primary);
+            border: none; border-radius: 10px; font-weight: bold;
+            cursor: pointer; margin-top: 10px; transition: 0.3s;
+        }
+
+        /* App Layout */
+        .app-container { display: none; flex-direction: column; height: 100%; }
+        header { padding: 20px; text-align: center; border-bottom: 1px solid var(--card-bg); }
+        .balance-card {
+            background: linear-gradient(45deg, #001f3f, #00d4ff);
+            margin: 20px; padding: 30px; border-radius: 25px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+        .balance-amount { font-size: 2.5rem; font-weight: 800; }
+
+        /* Sections */
+        .section { flex: 1; overflow-y: auto; padding: 20px; display: none; padding-bottom: 80px; }
+        .active-section { display: block; }
+
+        /* Mining Section */
+        .mining-circle {
+            width: 180px; height: 180px; border: 5px solid var(--primary);
+            border-radius: 50%; margin: 40px auto;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; font-weight: bold; color: var(--primary);
+            box-shadow: 0 0 20px var(--primary);
+            cursor: pointer; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; } }
+
+        /* Tasks & Referral */
+        .item-card {
+            background: var(--card-bg); padding: 15px; border-radius: 15px;
+            margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;
+            border-right: 4px solid var(--primary);
+        }
+
+        /* Bottom Nav */
+        nav {
+            position: fixed; bottom: 0; width: 100%; height: 70px;
+            background: rgba(10, 20, 30, 0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid var(--card-bg); z-index: 1000;
+        }
+        .nav-item { color: #888; text-align: center; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
+        .nav-item i { font-size: 1.5rem; display: block; }
+
     </style>
 </head>
-<body data-theme="dark">
+<body>
 
-    <div id="shooting-stars-box"></div>
-
-    <div class="theme-switch" onclick="toggleTheme()" title="گوهۆڕینا مۆدێ">
-        <i id="theme-icon" class="fas fa-moon"></i>
-    </div>
-
-    <div class="planet saturn"></div>
-    <div class="planet jupiter"></div>
-    <div class="planet moon"></div>
-
-    <div class="welcome-msg">welcome</div>
-
-    <div class="container">
-        <div class="brand-name">Tech Ai</div>
-        <div class="orbit">
-            <a href="https://www.tiktok.com/@_tech_ai_" target="_blank" class="icon-link tiktok"><i class="fab fa-tiktok"></i></a>
-            <a href="https://www.instagram.com/__tech_.ai._" target="_blank" class="icon-link instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram"><i class="fab fa-telegram"></i></a>
+    <div id="auth-screen">
+        <h1 style="color:var(--primary); font-weight: 900;">TECH AI</h1>
+        <p>Mining & Tasks Platform</p>
+        <div class="auth-card">
+            <h3>Login / Sign Up</h3>
+            <input type="text" id="username" placeholder="Username...">
+            <input type="password" id="password" placeholder="Password...">
+            <button onclick="login()">Enter App</button>
         </div>
     </div>
 
-    <div class="contact-trigger" onclick="toggleContact()" title="نامێ بنێرە">
-        <i class="fas fa-envelope"></i>
-    </div>
-    <div class="contact-popup" id="contactBox">
-        <h4 style="margin: 0 0 10px 0; color: var(--text-color);">Contact Me</h4>
-        <input type="text" id="name" placeholder="Navێ te...">
-        <textarea id="msg" rows="3" placeholder="Nameya te..."></textarea>
-        <button onclick="sendTele()">Send to Telegram</button>
-    </div>
+    <div class="app-container" id="main-app">
+        <header>
+            <h2 id="user-display">Tech AI Miner</h2>
+        </header>
 
-    <div id="live-time">00:00:00</div>
+        <div class="balance-card">
+            <p style="margin:0; opacity:0.8;">Total Tech AI Tokens</p>
+            <div class="balance-amount" id="balance">0.000</div>
+        </div>
+
+        <div class="section active-section" id="home">
+            <h3 style="text-align:center;">Cloud Mining</h3>
+            <div class="mining-circle" id="mining-btn" onclick="startMining()">
+                START MINING
+            </div>
+            <p id="status" style="text-align:center; color:var(--primary);">Status: IDLE</p>
+        </div>
+
+        <div class="section" id="tasks">
+            <h3>Daily Tasks</h3>
+            <div class="item-card">
+                <span>Follow TikTok</span>
+                <button style="width:auto; padding:5px 15px;" onclick="claimTask(1, this)">+1 Token</button>
+            </div>
+            <div class="item-card">
+                <span>Watch Video</span>
+                <button style="width:auto; padding:5px 15px;" onclick="claimTask(1, this)">+1 Token</button>
+            </div>
+            <div class="item-card">
+                <span>Join Telegram</span>
+                <button style="width:auto; padding:5px 15px;" onclick="claimTask(1, this)">+1 Token</button>
+            </div>
+        </div>
+
+        <div class="section" id="profile">
+            <h3>Your Profile</h3>
+            <div class="item-card">
+                <span>Referral Link:</span>
+                <small id="ref-link">tech.ai/ref?falah</small>
+            </div>
+            <button onclick="claimTask(5, this)">Invite Friend (+5 Tokens)</button>
+            <br><br>
+            <button style="background:#ff4757;" onclick="location.reload()">Logout</button>
+        </div>
+
+        <nav>
+            <div class="nav-item active" onclick="showSection('home', this)">
+                <i class="fas fa-hammer"></i> Home
+            </div>
+            <div class="nav-item" onclick="showSection('tasks', this)">
+                <i class="fas fa-tasks"></i> Tasks
+            </div>
+            <div class="nav-item" onclick="showSection('profile', this)">
+                <i class="fas fa-user"></i> Profile
+            </div>
+        </nav>
+    </div>
 
     <script>
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.setAttribute('data-theme', 'light');
-                icon.className = 'fas fa-sun';
+        let balance = 0;
+        let isMining = false;
+
+        // 1. Auth Logic
+        function login() {
+            const user = document.getElementById('username').value;
+            if(user) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+                document.getElementById('user-display').innerText = user;
             } else {
-                body.setAttribute('data-theme', 'dark');
-                icon.className = 'fas fa-moon';
+                alert("Please enter a username!");
             }
         }
 
-        function toggleContact() {
-            document.getElementById('contactBox').classList.toggle('active');
+        // 2. Navigation
+        function showSection(id, element) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active-section'));
+            document.getElementById(id).classList.add('active-section');
+            
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            element.classList.add('active');
         }
 
-        function createStar() {
-            const star = document.createElement('div');
-            star.className = 'shooting_star';
-            star.style.top = Math.random() * 50 + '%';
-            star.style.left = Math.random() * 100 + '%';
-            document.getElementById('shooting-stars-box').appendChild(star);
-            setTimeout(() => star.remove(), 3000);
+        // 3. Mining Logic
+        function startMining() {
+            if(isMining) return;
+            isMining = true;
+            document.getElementById('mining-btn').innerText = "MINING...";
+            document.getElementById('status').innerText = "Status: ACTIVE";
+            
+            setInterval(() => {
+                balance += 0.001;
+                updateDisplay();
+            }, 1000);
         }
-        setInterval(createStar, 2500);
 
-        setInterval(() => {
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
-        }, 1000);
+        // 4. Tasks & Referral
+        function claimTask(amount, btn) {
+            balance += amount;
+            updateDisplay();
+            btn.innerText = "CLAIMED";
+            btn.disabled = true;
+            btn.style.background = "#555";
+        }
 
-        function sendTele() {
-            const n = document.getElementById('name').value;
-            const m = document.getElementById('msg').value;
-            if(n && m) {
-                window.open(`https://t.me/falahzakho?text=Nav: ${n}%0AName: ${m}`, '_blank');
-            }
+        function updateDisplay() {
+            document.getElementById('balance').innerText = balance.toFixed(3);
         }
     </script>
 </body>
