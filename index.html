@@ -3,135 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech AI | Space Experience</title>
+    <title>Tech AI | Space Journey</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --neon: #00d4ff;
-            --bg: #050b1a;
+            --bg-color: radial-gradient(circle at center, #0a192f 0%, #000 100%);
+            --text-color: #00d4ff;
+            --sun-moon-shadow: 0 0 50px #00d4ff;
+            --neon-glow: 0 0 20px #00d4ff, 0 0 40px #00d4ff;
+        }
+
+        [data-theme="light"] {
+            --bg-color: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+            --text-color: #ffffff;
+            --sun-moon-shadow: 0 0 60px #ffea00;
         }
 
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle at center, #050b1a 0%, #000 100%);
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            overflow-x: hidden;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            min-height: 100vh; background: var(--bg-color);
+            font-family: 'Poppins', sans-serif; overflow-x: hidden;
+            transition: background 1s ease; color: white;
         }
 
-        /* --- Shooting Stars --- */
-        .night { position: fixed; width: 100%; height: 100%; transform: rotateZ(45deg); z-index: -1; }
+        /* --- 1. Shooting Stars --- */
         .shooting_star {
-            position: absolute; left: 50%; top: 50%; height: 2px;
-            background: linear-gradient(-45deg, #5f91ff, rgba(0, 0, 255, 0));
-            border-radius: 999px; filter: drop-shadow(0 0 6px #699bff);
-            animation: tail 3000ms ease-in-out infinite, shooting 3000ms ease-in-out infinite;
+            position: absolute; height: 2px;
+            background: linear-gradient(-45deg, #fff, rgba(0, 0, 255, 0));
+            border-radius: 999px; filter: drop-shadow(0 0 6px #fff);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
+            z-index: 0;
         }
         @keyframes tail { 0% { width: 0; } 30% { width: 100px; } 100% { width: 0; } }
-        @keyframes shooting { 0% { transform: translateX(0); } 100% { transform: translateX(300px); } }
+        @keyframes shooting { 0% { transform: translateX(0) rotate(45deg); } 100% { transform: translateX(400px) rotate(45deg); } }
 
-        /* --- Neon Glow Brand --- */
-        .brand-container { margin-top: 100px; text-align: center; }
+        /* Theme Switch */
+        .theme-switch {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            cursor: pointer; font-size: 1.5rem; background: rgba(255,255,255,0.1);
+            padding: 10px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px); color: white; transition: 0.3s;
+        }
+
+        /* --- 2. Tooltips --- */
+        [title] { position: relative; }
+
+        /* Planets */
+        .planet { position: absolute; border-radius: 50%; opacity: 0.7; pointer-events: none; transition: 1s ease; }
+        [data-theme="light"] .planet { opacity: 0; transform: translateY(-100vh); }
+        .saturn { width: 80px; height: 40px; background: #e3bb76; top: 15%; left: 10%; box-shadow: inset -10px -10px 20px #000; border: 4px solid rgba(227, 187, 118, 0.4); transform: rotate(-20deg); }
+        .jupiter { width: 100px; height: 100px; background: radial-gradient(circle, #d39c7e, #af6124); top: 60%; left: 5%; }
+        .uranus { width: 60px; height: 60px; background: #b0e0e6; top: 10%; right: 15%; box-shadow: 0 0 20px #b0e0e6; }
+        .neptune { width: 50px; height: 50px; background: #4169e1; bottom: 20%; right: 10%; }
+        .moon { width: 40px; height: 40px; background: #ddd; top: 30%; right: 40%; box-shadow: 0 0 15px #fff; }
+
+        /* Welcome & 3. Neon Glow Brand */
+        .welcome-msg {
+            font-size: 3rem; font-weight: 800; text-transform: uppercase;
+            margin-bottom: 20px; color: var(--text-color);
+            text-shadow: var(--sun-moon-shadow); z-index: 10;
+        }
+
+        .container { position: relative; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; }
         .brand-name {
-            font-size: 3.5rem; font-weight: 900;
-            color: #fff; text-transform: uppercase;
-            text-shadow: 0 0 10px var(--neon), 0 0 20px var(--neon), 0 0 40px var(--neon);
-            border: 4px solid var(--neon);
-            padding: 10px 40px; border-radius: 15px;
-            box-shadow: 0 0 15px var(--neon), inset 0 0 15px var(--neon);
-            animation: pulse 2s infinite alternate;
+            color: #ffffff; font-size: 2.2rem; font-weight: 900;
+            text-shadow: var(--neon-glow); z-index: 10;
+            padding: 10px 25px; background: rgba(0, 212, 255, 0.1);
+            backdrop-filter: blur(5px); border: 2px solid var(--text-color);
+            border-radius: 15px; animation: pulseGlow 2s infinite alternate;
         }
-        @keyframes pulse { from { opacity: 0.8; } to { opacity: 1; } }
+        @keyframes pulseGlow { from { box-shadow: 0 0 15px var(--text-color); } to { box-shadow: 0 0 35px var(--text-color); } }
 
-        /* --- Contact Form --- */
-        .contact-box {
-            margin-top: 50px; background: rgba(255, 255, 255, 0.05);
-            padding: 30px; border-radius: 20px; backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 212, 255, 0.3); width: 320px;
+        /* Orbit Links */
+        .orbit {
+            position: absolute; width: 100%; height: 100%;
+            border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 50%;
+            animation: rotateOrbit 15s linear infinite;
         }
-        .contact-box input, .contact-box textarea {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            background: rgba(0,0,0,0.3); border: 1px solid var(--neon);
-            border-radius: 8px; color: white; box-sizing: border-box;
+        .icon-link {
+            position: absolute; width: 60px; height: 60px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            text-decoration: none; font-size: 1.8rem; transition: 0.4s;
         }
-        .contact-box button {
-            width: 100%; padding: 12px; background: var(--neon);
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
-            transition: 0.3s;
-        }
-        .contact-box button:hover { box-shadow: 0 0 20px var(--neon); transform: scale(1.02); }
+        .icon-link:hover { transform: scale(1.2); background: #fff; box-shadow: 0 0 20px #fff; }
+        .tiktok { top: -30px; left: 50%; transform: translateX(-50%); color: #ff0050; }
+        .instagram { bottom: -30px; left: 50%; transform: translateX(-50%); color: #E1306C; }
+        .telegram { top: 50%; left: -30px; transform: translateY(-50%); color: #0088cc; }
+        @keyframes rotateOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- Live Time & Controls --- */
-        .footer-info { position: fixed; bottom: 20px; left: 20px; color: var(--neon); font-size: 1.1rem; }
+        /* --- 4. Contact Form --- */
+        .contact-card {
+            margin-top: 80px; background: rgba(255, 255, 255, 0.05);
+            padding: 25px; border-radius: 20px; backdrop-filter: blur(10px);
+            border: 1px solid var(--text-color); width: 300px; z-index: 100;
+        }
+        .contact-card input, .contact-card textarea {
+            width: 100%; padding: 12px; margin: 8px 0;
+            background: rgba(0,0,0,0.4); border: 1px solid #333;
+            color: white; border-radius: 10px; box-sizing: border-box;
+        }
+        .contact-card button {
+            width: 100%; padding: 12px; background: var(--text-color);
+            border: none; color: black; font-weight: bold;
+            border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .contact-card button:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--text-color); }
+
+        /* --- 5. Live Time --- */
+        #live-clock {
+            position: fixed; bottom: 20px; left: 20px;
+            font-size: 1.1rem; color: var(--text-color);
+            background: rgba(0,0,0,0.5); padding: 5px 15px;
+            border-radius: 20px; border: 1px solid var(--text-color);
+        }
+
+        /* --- 6. Background Music Control --- */
         .music-btn {
             position: fixed; bottom: 20px; right: 20px;
-            width: 55px; height: 55px; background: var(--neon);
+            width: 50px; height: 50px; background: var(--text-color);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; color: black; font-size: 1.5rem; z-index: 100;
+            cursor: pointer; color: black; font-size: 1.3rem; z-index: 1000;
         }
 
-        /* Tooltip Style */
-        [data-title]:hover:after {
-            content: attr(data-title);
-            position: absolute; bottom: 65px; background: white; color: black;
-            padding: 5px 10px; border-radius: 5px; font-size: 12px; white-space: nowrap;
+        .sun {
+            position: absolute; width: 150px; height: 150px; background: #ffea00;
+            border-radius: 50%; box-shadow: 0 0 100px #ffea00; display: none;
         }
+        [data-theme="light"] .sun { display: block; top: 10%; left: 10%; animation: sunFloat 4s ease-in-out infinite; }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
-    <div class="night" id="shooting-stars-container"></div>
+    <div id="stars-layer"></div>
 
-    <div class="brand-container">
-        <h1 class="brand-name" data-title="بخێر بێی بۆ سایتێ من">Tech Ai</h1>
+    <div class="theme-switch" onclick="toggleTheme()" title="گوهۆڕینا مۆدێ">
+        <i id="theme-icon" class="fas fa-moon"></i>
     </div>
 
-    <div class="contact-box">
-        <h3 style="text-align:center; color: var(--neon);">Contact Me</h3>
-        <input type="text" id="name" placeholder="Navê te...">
-        <textarea id="message" rows="3" placeholder="Nameya te..."></textarea>
-        <button onclick="sendTelegram()">Send to Telegram</button>
+    <div class="planet saturn"></div>
+    <div class="planet jupiter"></div>
+    <div class="planet uranus"></div>
+    <div class="planet neptune"></div>
+    <div class="planet moon"></div>
+    <div class="sun"></div>
+
+    <div class="welcome-msg">welcome</div>
+
+    <div class="container">
+        <div class="brand-name" title="براندێ فەرمی">Tech Ai</div>
+        <div class="orbit">
+            <a href="https://www.tiktok.com/@_tech_ai_?_r=1&_t=ZS-95RtUPqa7Sj" target="_blank" class="icon-link tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="https://www.instagram.com/__tech_.ai._?igsh=MTZ2ZGIxcXB2YjVjaw%3D%3D&utm_source=qr" target="_blank" class="icon-link instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://t.me/tech_ai_falah" target="_blank" class="icon-link telegram" title="Telegram"><i class="fab fa-telegram"></i></a>
+        </div>
     </div>
 
-    <div class="footer-info" id="clock">00:00:00</div>
-
-    <div class="music-btn" onclick="controlMusic()" data-title="کارپێکرنا موزیکێ">
-        <i id="music-icon" class="fas fa-play"></i>
+    <div class="contact-card">
+        <h3 style="text-align:center; color:var(--text-color); margin-top:0;">Contact Me</h3>
+        <input type="text" id="sender-name" placeholder="Navێ te...">
+        <textarea id="sender-msg" rows="3" placeholder="Nameya te..."></textarea>
+        <button onclick="sendToTelegram()">Send to Telegram</button>
     </div>
 
-    <div id="player" style="position: absolute; top: -1000px;"></div>
+    <div id="live-clock">00:00:00</div>
+
+    <div class="music-btn" onclick="toggleSpaceMusic()" title="موزیکا فەزایێ">
+        <i id="m-icon" class="fas fa-play"></i>
+    </div>
+
+    <div id="yt-player" style="position: absolute; top: -1000px;"></div>
 
     <script>
-        // 1. Shooting Stars Generator
-        const container = document.getElementById('shooting-stars-container');
-        for (let i = 0; i < 6; i++) {
-            let star = document.createElement('div');
+        // 1. Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fas fa-sun';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-moon';
+            }
+        }
+
+        // 2. Shooting Stars Generator
+        function createShootingStar() {
+            const star = document.createElement('div');
             star.className = 'shooting_star';
-            star.style.top = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 50 + '%';
             star.style.left = Math.random() * 100 + '%';
-            star.style.animationDelay = (Math.random() * 3000) + 'ms';
-            container.appendChild(star);
+            document.getElementById('stars-layer').appendChild(star);
+            setTimeout(() => star.remove(), 3000);
         }
+        setInterval(createShootingStar, 2500);
 
-        // 2. Live Clock
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString();
-        }
-        setInterval(updateTime, 1000);
+        // 3. Live Time
+        setInterval(() => {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString();
+        }, 1000);
 
-        // 3. Telegram Link Logic
-        function sendTelegram() {
-            const name = document.getElementById('name').value;
-            const msg = document.getElementById('message').value;
+        // 4. Telegram Logic
+        function sendToTelegram() {
+            const name = document.getElementById('sender-name').value;
+            const msg = document.getElementById('sender-msg').value;
             if(name && msg) {
-                const url = `https://t.me/falahzakho?text=Slav! Ez ${name} me. Name: ${msg}`;
-                window.open(url, '_blank');
-            } else { alert("هیڤی دکەم ناڤ و نامێ بنڤێسە"); }
+                window.open(`https://t.me/falahzakho?text=Slav! Nav: ${name}%0AName: ${msg}`, '_blank');
+            } else {
+                alert("Nav u Namey بنڤێسە");
+            }
         }
 
-        // 4. YouTube Audio Control
+        // 5. YouTube Audio API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -139,26 +225,18 @@
 
         var player;
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'WI3F9RKSAQY',
-                events: { 'onReady': onPlayerReady }
+            player = new YT.Player('yt-player', {
+                height: '0', width: '0', videoId: 'WI3F9RKSAQY'
             });
         }
 
-        function onPlayerReady(event) { console.log("Music Ready"); }
-
         let playing = false;
-        function controlMusic() {
-            const icon = document.getElementById('music-icon');
-            if (!playing) {
-                player.playVideo();
-                icon.className = 'fas fa-pause';
-                playing = true;
+        function toggleSpaceMusic() {
+            const icon = document.getElementById('m-icon');
+            if(!playing) {
+                player.playVideo(); icon.className = 'fas fa-pause'; playing = true;
             } else {
-                player.pauseVideo();
-                icon.className = 'fas fa-play';
-                playing = false;
+                player.pauseVideo(); icon.className = 'fas fa-play'; playing = false;
             }
         }
     </script>
