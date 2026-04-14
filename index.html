@@ -71,7 +71,7 @@
             <input type="text" id="rg-name" placeholder="Full Name">
             <input type="email" id="rg-email" placeholder="Email">
             <input type="password" id="rg-pass" placeholder="Password">
-            <button class="btn" id="signup-btn" onclick="sendOTP()">Create</button>
+            <button class="btn" id="signup-btn" onclick="sendOTP()">Create Account</button>
             <p style="font-size:0.8rem">Already have an account? <a href="#" onclick="showAuth('signin')" style="color:var(--primary)">Sign In</a></p>
         </div>
     </div>
@@ -87,48 +87,36 @@
 
     <div id="app-shell">
         <div class="content">
-            
             <div id="home-page" class="page">
                 <div class="header-stats">
                     <span class="price-tag">1 JF Token = 0.06$</span>
                 </div>
-
                 <div class="mining-section">
                     <div class="mining-circle" id="m-circle">
                         <div class="balance-text" id="bal-display">0.000</div>
                         <div class="timer-text" id="timer-display">START MINING</div>
                     </div>
                     <button class="btn" id="m-btn" style="width: 200px; margin-top: 20px;" onclick="handleMining()">Start Mining</button>
-                    <p style="color:var(--primary); font-size:0.9rem; margin-top:15px;">0.10 JF/h</p>
                 </div>
-
                 <div class="mining-info">
-                    <div class="info-box">
-                        <i class="fas fa-users"></i> Invites: <span id="inv-count">0</span>
-                    </div>
+                    <div class="info-box"><i class="fas fa-users"></i> Invites: <span id="inv-count">0</span></div>
                 </div>
             </div>
 
             <div id="task-page" class="page hidden">
                 <h2>Tasks</h2>
                 <div id="tg-task-container" class="card-item">
-                    <div>
-                        <strong>Join Telegram</strong><br>
-                        <small id="tg-status">+1 JF Token</small>
-                    </div>
+                    <div><strong>Join Telegram</strong><br><small>+1 JF Token</small></div>
                     <div id="tg-actions">
                         <button class="btn" id="btn-join" style="width:auto; padding:5px 15px;" onclick="startTgTask()">Join</button>
                         <button class="btn hidden" id="btn-check" style="width:auto; padding:5px 15px; background:#2ecc71" onclick="claimTgTask()">Check</button>
                     </div>
                 </div>
-
                 <hr style="border:0; border-top:1px solid #30363d; margin:20px 0;">
-
                 <h2>Referral System</h2>
                 <div class="card-item">
                     <div style="width:100%">
                         <strong>Invite Friends</strong><br>
-                        <small>Get 1 JF for each friend</small>
                         <input type="text" id="ref-link" readonly style="margin-top:10px; font-size:0.8rem; background:#000;">
                         <button class="btn" onclick="copyRef()">Copy Link</button>
                     </div>
@@ -137,15 +125,8 @@
 
             <div id="profile-page" class="page hidden">
                 <h2 style="text-align:center">Profile</h2>
-                <div class="card-item locked">
-                    <span>Wallet</span> <span class="soon-badge">Soon</span>
-                </div>
-                <div class="card-item locked">
-                    <span>KYC</span> <span class="soon-badge">Soon</span>
-                </div>
                 <button class="btn" style="background:#f85149; color:white;" onclick="logout()">Logout</button>
             </div>
-
         </div>
 
         <nav>
@@ -156,7 +137,6 @@
     </div>
 
     <script>
-        // Data Handling - No reset on reload
         let balance = parseFloat(localStorage.getItem('jf_bal')) || 0;
         let invites = parseInt(localStorage.getItem('jf_invites')) || 0;
         let miningActive = localStorage.getItem('jf_mining') === 'true';
@@ -168,11 +148,20 @@
             document.getElementById(type + '-screen').classList.remove('hidden');
         }
 
+        // --- SIGN UP SYSTEM ---
         async function sendOTP() {
-            const userEmail = document.getElementById('rg-email').value;
-            if(!userEmail) { alert("Please enter your email"); return; }
+            const name = document.getElementById('rg-name').value;
+            const email = document.getElementById('rg-email').value;
+            const pass = document.getElementById('rg-pass').value;
+
+            if(!name || !email || !pass) { alert("Please fill all fields"); return; }
+            
+            // پاراستنا داتایێن کاتی هەتا ئۆ تی پی دهێتە پشتڕاستکرن
+            localStorage.setItem('temp_reg_email', email);
+            localStorage.setItem('temp_reg_pass', pass);
+
             const btn = document.getElementById('signup-btn');
-            btn.innerText = "Sending..."; btn.disabled = true;
+            btn.innerText = "Sending OTP..."; btn.disabled = true;
 
             const generatedOTP = Math.floor(1000000 + Math.random() * 9000000); 
             localStorage.setItem('temp_otp', generatedOTP);
@@ -183,29 +172,40 @@
                     headers: { "Content-Type": "application/json", Accept: "application/json" },
                     body: JSON.stringify({
                         access_key: "07aba02f-4481-47f6-b285-25b04309b183",
-                        email: userEmail,
-                        subject: "JF Network Verification Code",
-                        message: `Welcome to JF Network! Your 7-digit verification code is: ${generatedOTP}`,
-                        from_name: "JF Network"
+                        email: email,
+                        subject: "JF Network Verification",
+                        message: `Your code: ${generatedOTP}`,
                     }),
                 });
-                const result = await response.json();
-                if (result.success) { showAuth('otp'); } else { alert("Error: " + result.message); }
+                if ((await response.json()).success) { showAuth('otp'); } 
             } catch (error) { alert("Network error."); }
-            finally { btn.innerText = "Create"; btn.disabled = false; }
+            finally { btn.innerText = "Create Account"; btn.disabled = false; }
         }
 
         function verifyOTP() {
             if(document.getElementById('otp-code').value === localStorage.getItem('temp_otp')) {
+                // تومارکرنا فەرمی یا هەژمارێ
+                localStorage.setItem('registered_email', localStorage.getItem('temp_reg_email'));
+                localStorage.setItem('registered_pass', localStorage.getItem('temp_reg_pass'));
                 localStorage.setItem('jf_logged', 'true');
                 checkStatus();
-            } else { alert("Wrong code!"); }
+            } else { alert("Wrong verification code!"); }
         }
 
+        // --- LOGIN SYSTEM (SECURE) ---
         function login() {
-            if(document.getElementById('li-email').value) {
+            const inputEmail = document.getElementById('li-email').value;
+            const inputPass = document.getElementById('li-pass').value;
+            
+            const savedEmail = localStorage.getItem('registered_email');
+            const savedPass = localStorage.getItem('registered_pass');
+
+            // پشکنین: کا هەژمار هەیە و زانیاری د دروستن؟
+            if(inputEmail === savedEmail && inputPass === savedPass && savedEmail !== null) {
                 localStorage.setItem('jf_logged', 'true');
                 checkStatus();
+            } else {
+                alert("Invalid email or password. Please sign up first.");
             }
         }
 
@@ -238,16 +238,12 @@
         function resumeMining() {
             document.getElementById('m-circle').classList.add('active');
             document.getElementById('m-btn').disabled = true;
-            document.getElementById('m-btn').style.opacity = '0.5';
-
             let timerInterval = setInterval(() => {
-                let now = Date.now();
-                let diff = endTime - now;
+                let diff = endTime - Date.now();
                 if(diff <= 0) {
                     clearInterval(timerInterval); miningActive = false;
                     localStorage.setItem('jf_mining', 'false');
                     document.getElementById('timer-display').innerText = "START MINING";
-                    document.getElementById('m-circle').classList.remove('active');
                     document.getElementById('m-btn').disabled = false;
                     return;
                 }
@@ -259,7 +255,6 @@
             }, 1000);
         }
 
-        // --- Telegram Task Logic ---
         function startTgTask() {
             window.open('https://t.me/jfnetwork', '_blank');
             document.getElementById('btn-join').classList.add('hidden');
@@ -272,23 +267,12 @@
             localStorage.setItem('jf_bal', balance);
             localStorage.setItem('jf_tg_claimed', 'true');
             updateUI();
-            alert("Success! +1 JF added.");
         }
 
-        // --- Referral System Logic ---
         function setupReferral() {
             let userId = localStorage.getItem('jf_user_id') || 'user_' + Math.random().toString(36).substr(2, 9);
             localStorage.setItem('jf_user_id', userId);
-            let currentUrl = window.location.href.split('?')[0];
-            document.getElementById('ref-link').value = currentUrl + '?ref=' + userId;
-
-            // Check if invited by someone
-            const urlParams = new URLSearchParams(window.location.search);
-            const refBy = urlParams.get('ref');
-            if(refBy && !localStorage.getItem('ref_processed')) {
-                // Here we count the referral (Logic for +1 token requires a real backend, but this sets the stage)
-                localStorage.setItem('ref_processed', 'true');
-            }
+            document.getElementById('ref-link').value = window.location.href.split('?')[0] + '?ref=' + userId;
         }
 
         function copyRef() {
@@ -300,12 +284,13 @@
         function updateUI() {
             document.getElementById('bal-display').innerText = balance.toFixed(3);
             document.getElementById('inv-count').innerText = invites;
-            if(tgClaimed && document.getElementById('tg-task-container')) {
-                document.getElementById('tg-task-container').style.display = 'none';
-            }
+            if(tgClaimed) document.getElementById('tg-task-container').style.display = 'none';
         }
 
-        function logout() { localStorage.clear(); location.reload(); }
+        function logout() {
+            localStorage.removeItem('jf_logged');
+            location.reload();
+        }
 
         window.onload = checkStatus;
     </script>
